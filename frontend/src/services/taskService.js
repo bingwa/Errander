@@ -1,6 +1,6 @@
 // frontend/src/services/taskService.js
 import axios from 'axios';
-const API_URL = 'http://localhost:5000/api/tasks';
+const API_URL = `${process.env.REACT_APP_API_URL}/tasks`;
 
 const taskService = {
     createTask: (data, token) => axios.post(API_URL, data, { headers: { 'x-auth-token': token } }),
