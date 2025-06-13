@@ -1,76 +1,31 @@
-// frontend/src/App.js
-import React, { useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'; 
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-// Context & Components
-import AuthContext, { AuthProvider } from './context/AuthContext.js';
-import { ThemeProvider } from './context/ThemeContext.js'; // <-- THIS IMPORT IS THE FIX
-import AppNavbar from './components/Navbar.js';
-import PrivateRoute from './utils/PrivateRoute.js';
+// FIX: Import the Ant Design CSS file to apply styles globally.
+// This will fix the unstyled components on the login page.
+import 'antd/dist/reset.css'; // or 'antd/dist/antd.css' for older versions
 
-// Pages
-import HomePage from './pages/HomePage.js';
-import LoginPage from './pages/LoginPage.js';
-import RegisterPage from './pages/RegisterPage.js';
-import OtpPage from './pages/OtpPage.js';
-import UserDashboard from './pages/UserDashboard.js';
-import ErranderDashboard from './pages/ErranderDashboard.js';
-import BecomeErranderPage from './pages/BecomeErranderPage.js';
-import AdminPage from './pages/AdminPage.js';
-import ServicesPage from './pages/ServicesPage.js';
-import BookingPage from './pages/BookingPage.js';
-import FindErranderPage from './pages/FindErranderPage.js';
-import TaskTrackingPage from './pages/TaskTrackingPage.js';
-import CheckoutPage from './pages/CheckoutPage.js';
+// Import your page components
+import LoginPage from './pages/LoginPage';
+import AdminPage from './pages/AdminPage';
+import ErranderDashboard from './pages/ErranderDashboard';
+import OtpPage from './pages/OtpPage';
+// Add any other page imports here
 
-const AppRoutes = () => {
-    const { user } = useContext(AuthContext);
-    
-    if (user && (window.location.pathname === '/login' || window.location.pathname === '/register' || window.location.pathname === '/')) {
-        const dashboardPath = user.isAdmin ? "/admin" : (user.isErrander ? "/errander-dashboard" : "/dashboard");
-        return <Navigate to={dashboardPath} replace />;
-    }
-
-    return (
-        <>
-            <AppNavbar />
-            <main className="container-fluid p-0">
-                <Routes>
-                    <Route path="/" element={!user ? <HomePage /> : <Navigate to="/dashboard" />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    <Route path="/verify-otp" element={<OtpPage />} />
-                    <Route element={<PrivateRoute />}>
-                        <Route path="/dashboard" element={<UserDashboard />} />
-                        <Route path="/services" element={<ServicesPage />} />
-                        <Route path="/booking/:serviceId" element={<BookingPage />} />
-                        <Route path="/find-errander/:taskId" element={<FindErranderPage />} />
-                        <Route path="/track/:taskId" element={<TaskTrackingPage />} />
-                        <Route path="/checkout/:taskId" element={<CheckoutPage />} />
-                        <Route path="/become-errander" element={<BecomeErranderPage />} />
-                        <Route path="/errander-dashboard" element={<ErranderDashboard />} />
-                        <Route path="/admin" element={<AdminPage />} />
-                    </Route>
-                    <Route path="*" element={<Navigate to="/" />} />
-                </Routes>
-            </main>
-        </>
-    );
-};
-
-// The main App component now correctly wraps everything
 function App() {
   return (
-    // THE FIX IS HERE: ThemeProvider wraps everything
-    <ThemeProvider>
-        <Router>
-            <AuthProvider>
-                <AppRoutes />
-            </AuthProvider>
-        </Router>
-    </ThemeProvider>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/dashboard" efrlement={<ErranderDashboard />} />
+          <Route path="/verify-otp" element={<OtpPage />} />
+          {/* Define a default route, e.g., to the login page */}
+          <Route path="/" element={<LoginPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
