@@ -1,0 +1,31 @@
+/* frontend/src/pages/TaskTrackingPage.css */
+.tracking-container {
+    max-width: 900px;
+    margin: 2rem auto;
+}
+
+.tracking-header {
+    background-color: var(--bg-primary);
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.tracking-header h3 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.status-badge {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.tracking-map-container {
+    height: 60vh;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+}

@@ -1,0 +1,100 @@
+/* App.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* --- Light Mode Variables (Default) --- */
+:root {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8F9FA;
+  --bg-tertiary: #F4F7F6;
+  --text-primary: #212529;
+  --text-secondary: #6C757D;
+  --border-color: #E9ECEF;
+  --primary-color: #667eea;
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* --- Dark Mode Variables (High Contrast) --- */
+[data-theme='dark'] {
+  --bg-primary: #1C1C1E;      /* A standard dark color for cards */
+  --bg-secondary: #000000;    /* Pure black for the main page background */
+  --bg-tertiary: #2C2C2F;      /* For hover states or input backgrounds */
+  --text-primary: #FFFFFF;    /* Pure white for maximum readability */
+  --text-secondary: #AEAEB2;  /* A much brighter grey for secondary text */
+  --border-color: #3A3A3C;      /* A subtle, but visible border */
+}
+
+/* --- Base Body Styling --- */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* --- DEFINITIVE FIX FOR ALL TEXT IN DARK MODE --- */
+/* These highly specific rules with !important will force override Bootstrap's defaults */
+[data-theme='dark'] body,
+[data-theme='dark'] h1, 
+[data-theme='dark'] h2, 
+[data-theme='dark'] h3, 
+[data-theme='dark'] h4, 
+[data-theme='dark'] h5, 
+[data-theme='dark'] h6,
+[data-theme='dark'] .card-title,
+[data-theme='dark'] .modal-title,
+[data-theme='dark'] .display-5,
+[data-theme='dark'] .fw-bold,
+[data-theme='dark'] strong,
+[data-theme='dark'] .nav-link,
+[data-theme='dark'] .navbar-brand {
+    color: var(--text-primary) !important;
+}
+
+[data-theme='dark'] p, 
+[data-theme='dark'] .lead, 
+[data-theme='dark'] .card-text,
+[data-theme='dark'] .card-subtitle,
+[data-theme='dark'] label,
+[data-theme='dark'] .form-label,
+[data-theme='dark'] .text-muted {
+    color: var(--text-secondary) !important;
+}
+
+
+/* --- Universal Component Styling --- */
+.card, .modal-content, .tasks-section, .stat-card, .navbar, .modal-header, .modal-footer {
+    background-color: var(--bg-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: none !important;
+}
+.modal-header { border-bottom: 1px solid var(--border-color) !important; }
+.modal-footer { border-top: 1px solid var(--border-color) !important; }
+.navbar { border-bottom: 1px solid var(--border-color) !important; }
+
+
+/* Form inputs styling, including the text inside them */
+.form-control, .form-select {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+.form-control::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+/* Tabs */
+[data-theme='dark'] .nav-tabs { border-bottom-color: var(--border-color); }
+[data-theme='dark'] .nav-tabs .nav-link { color: var(--text-secondary); }
+[data-theme='dark'] .nav-tabs .nav-link.active {
+    color: var(--primary-color);
+    background-color: var(--bg-primary);
+    border-color: var(--border-color) var(--border-color) var(--bg-primary);
+}
+
+/* Leaflet Popups */
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}

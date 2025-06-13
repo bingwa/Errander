@@ -1,0 +1,22 @@
+/* frontend/src/pages/FindErranderPage.css */
+.map-container {
+    height: 500px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.view-toggle {
+    margin-bottom: 1.5rem;
+}
+
+.errander-list-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.errander-list-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}

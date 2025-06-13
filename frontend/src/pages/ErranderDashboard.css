@@ -1,0 +1,21 @@
+/* frontend/src/pages/ErranderDashboard.css */
+.task-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+}
+
+.task-card-header {
+    background-color: #f8f9fa;
+    font-weight: 500;
+}
+
+.task-status {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.status-pending { color: #ffc107; }
+.status-accepted { color: #17a2b8; }
+.status-in_progress { color: #007bff; }
+.status-completed { color: #28a745; }
