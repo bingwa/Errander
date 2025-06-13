@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-// FIX: Removed unused 'useContext' import
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
-// FIX: Removed unused 'AuthContext' import
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -16,7 +14,6 @@ const LoginPage = () => {
         setLoading(true);
         setError('');
         try {
-            // The auth logic would use a service like this
             await authService.login(email, password);
             navigate('/dashboard');
         } catch (err) {

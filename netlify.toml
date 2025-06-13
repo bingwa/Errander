@@ -1,0 +1,19 @@
+# Netlify configuration file
+
+# This [build] block defines the build settings.
+[build]
+  # Base directory: The folder where Netlify should run the build command.
+  base = "frontend"
+  
+  # Build command: The command to build your site.
+  command = "npm run build"
+  
+  # Publish directory: The folder containing the built site files.
+  publish = "frontend/build"
+
+# This [[redirects]] block handles SPA (Single-Page Application) routing.
+# It ensures that direct navigation to any page (e.g., /login) works correctly.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
