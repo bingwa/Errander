@@ -8,8 +8,9 @@
   # Build command: The command to build your site.
   command = "npm run build"
   
-  # Publish directory: The folder containing the built site files.
-  publish = "frontend/build"
+  # FIX: The publish directory should be relative to the 'base' directory.
+  # Since the base is 'frontend', the publish directory is simply 'build'.
+  publish = "build"
 
 # This [[redirects]] block handles SPA (Single-Page Application) routing.
 # It ensures that direct navigation to any page (e.g., /login) works correctly.
