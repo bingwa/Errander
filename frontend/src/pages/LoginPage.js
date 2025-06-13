@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
+import { Form, Button, Alert, Spinner, Container } from 'react-bootstrap';
+import './Auth.css';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -9,61 +11,61 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
         try {
-            await authService.login(email, password);
-            navigate('/dashboard');
-        } catch (err) {
-            setError('Failed to log in. Please check your credentials.');
-            console.error(err);
-        } finally {
+            const response = await authService.login(email, password);
             setLoading(false);
+            // On success, the backend sends an OTP. Navigate to the OTP verification page.
+            // We pass the userId in the navigation state so the next page knows who is verifying.
+            navigate('/verify-otp', { state: { userId: response.data.userId } });
+        } catch (err) {
+            setLoading(false);
+            setError(err.response?.data?.msg || 'Login failed. Please check your credentials.');
         }
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-md">
-                <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
-                <form onSubmit={handleLogin}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-2" htmlFor="email">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-                            required
-                        />
+        <div className="auth-container">
+            <div className="auth-card">
+                <div className="auth-header">
+                    <h2>Welcome Back!</h2>
+                </div>
+                <div className="auth-body">
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control
+                                type="email"
+                                placeholder="Enter email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+                        
+                        <Button className="auth-btn" type="submit" disabled={loading}>
+                            {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/> : 'Login'}
+                        </Button>
+                    </Form>
+                    <div className="auth-footer">
+                        Don't have an account? <Link to="/register">Sign Up</Link>
                     </div>
-                    <div className="mb-6">
-                        <label className="block text-gray-700 mb-2" htmlFor="password">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-                            required
-                        />
-                    </div>
-                    {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 disabled:bg-blue-300"
-                    >
-                        {loading ? 'Logging in...' : 'Login'}
-                    </button>
-                </form>
+                </div>
             </div>
         </div>
     );

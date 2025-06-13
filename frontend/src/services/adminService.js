@@ -1,7 +1,7 @@
 // frontend/src/services/adminService.js
 import axios from 'axios';
 
-const API_URL = `${process.env.REACT_APP_API_URL}/admin`;
+const API_URL = `http://localhost:5000/api/admin`;
 
 const getPendingErranders = (token) => {
     return axios.get(`${API_URL}/pending-erranders`, {

@@ -1,18 +1,16 @@
-import React, { useEffect, useState, useCallback } from 'react';
-// FIX: Changed the import to a more specific service that likely exists
-// in your project structure, resolving the 'Module not found' error.
-import applicationService from '../services/applicationService'; 
+import React, { useEffect, useState } from 'react';
+import applicationService from '../services/applicationService';
 
 const AdminPage = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchApplications = useCallback(async () => {
+    // This is the original function that caused an ESLint warning.
+    const fetchApplications = async () => {
         try {
             setLoading(true);
-            // FIX: Using the specific service to fetch data.
-            const response = await applicationService.getApplications(); 
+            const response = await applicationService.getApplications();
             setApplications(response.data);
             setError(null);
         } catch (err) {
@@ -21,11 +19,11 @@ const AdminPage = () => {
         } finally {
             setLoading(false);
         }
-    }, []);
+    };
 
     useEffect(() => {
         fetchApplications();
-    }, [fetchApplications]);
+    }, []);
 
     if (loading) {
         return <div className="text-center p-8">Loading applications...</div>;
@@ -60,11 +58,11 @@ const AdminPage = () => {
                                 </td>
                                 <td className="py-3 px-6 text-center">
                                     <div className="flex item-center justify-center">
-                                        <button className="w-6 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            {/* View Icon */}
+                                        <button className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                            {/* View Icon can go here */}
                                         </button>
-                                        <button className="w-6 transform hover:text-red-500 hover:scale-110">
-                                            {/* Delete Icon */}
+                                        <button className="w-4 mr-2 transform hover:text-red-500 hover:scale-110">
+                                            {/* Delete Icon can go here */}
                                         </button>
                                     </div>
                                 </td>

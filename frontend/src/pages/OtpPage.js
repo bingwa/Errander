@@ -1,74 +1,54 @@
-import React, { useState } from 'react';
-// FIX: Removed 'useNavigate' since it was assigned but never used.
-// If navigation is needed after OTP verification, this import and the
-// 'navigate' constant should be re-added and implemented in the handler.
-import { useLocation } from 'react-router-dom';
+import React, { useState, useContext, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
+import AuthContext from '../context/AuthContext';
+import { Button, Alert, Spinner } from 'react-bootstrap';
+import './Auth.css';
 
 const OtpPage = () => {
-    const [otp, setOtp] = useState('');
+    const [otp, setOtp] = useState(new Array(6).fill(""));
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    
-    // We might still need the location to get user info, e.g., email
+    const { loginAction } = useContext(AuthContext);
+    const navigate = useNavigate();
     const location = useLocation();
-    const { email } = location.state || {};
+    const { userId } = location.state || {};
+    const inputsRef = useRef([]);
 
-    // FIX: Removed 'navigate' as it was defined but not used.
-    // const navigate = useNavigate();
-
-    const handleVerifyOtp = async (e) => {
+    const handleChange = (element, index) => {
+        if (isNaN(element.value)) return false;
+        setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
+        if (element.nextSibling) { element.nextSibling.focus(); }
+    };
+    const handleKeyDown = (e, index) => { if (e.key === 'Backspace' && !otp[index] && inputsRef.current[index - 1]) { inputsRef.current[index - 1].focus(); } };
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!userId) { return setError("Session error. Please try logging in again."); }
         setLoading(true);
         setError('');
         try {
-            await authService.verifyOtp(email, otp);
-            // On success, you would navigate the user. For example:
-            // navigate('/dashboard'); 
-            // Since this logic wasn't present, the variable was unused.
-            alert('OTP Verified Successfully! Navigation logic would go here.');
+            const response = await authService.verifyOtp(userId, otp.join(""));
+            loginAction(response.data.token);
         } catch (err) {
-            setError('Invalid OTP. Please try again.');
-            console.error(err);
-        } finally {
             setLoading(false);
+            setError(err.response?.data?.msg || 'OTP verification failed.');
         }
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-sm">
-                <h2 className="text-2xl font-bold text-center mb-2">Verify OTP</h2>
-                <p className="text-center text-gray-600 mb-6">
-                    An OTP has been sent to {email || 'your email'}.
-                </p>
-                <form onSubmit={handleVerifyOtp}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-2" htmlFor="otp">
-                            Enter OTP
-                        </label>
-                        <input
-                            type="text"
-                            id="otp"
-                            value={otp}
-                            onChange={(e) => setOtp(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300 text-center tracking-[0.5em]"
-                            maxLength="6"
-                            required
-                        />
-                    </div>
-                    {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 disabled:bg-blue-300"
-                    >
-                        {loading ? 'Verifying...' : 'Verify'}
-                    </button>
-                </form>
+        <div className="auth-container">
+            <div className="auth-card">
+                <div className="auth-header"><h2>Two-Factor Authentication</h2></div>
+                <div className="auth-body">
+                    <p className="text-center text-muted">A 6-digit code has been sent to your phone.</p>
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    <form onSubmit={handleSubmit}>
+                        <div className="otp-inputs">{otp.map((data, index) => <input className="otp-input" type="text" maxLength="1" key={index} value={data} onChange={e => handleChange(e.target, index)} onFocus={e => e.target.select()} onKeyDown={e => handleKeyDown(e, index)} ref={el => (inputsRef.current[index] = el)} />)}</div>
+                        <Button className="auth-btn" type="submit" disabled={loading}>{loading ? <Spinner animation="border" size="sm" /> : 'Verify Account'}</Button>
+                    </form>
+                </div>
             </div>
         </div>
     );
 };
-
 export default OtpPage;
