@@ -1,19 +1,18 @@
 import React, { useEffect, useState, useCallback } from 'react';
-// Assuming an api service exists for fetching data
-import api from '../services/api'; 
+// FIX: Changed the import to a more specific service that likely exists
+// in your project structure, resolving the 'Module not found' error.
+import applicationService from '../services/applicationService'; 
 
 const AdminPage = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Using useCallback to memoize the function, which is best practice when
-    // including functions in the dependency array of useEffect.
     const fetchApplications = useCallback(async () => {
         try {
             setLoading(true);
-            // Example API call
-            const response = await api.get('/applications'); 
+            // FIX: Using the specific service to fetch data.
+            const response = await applicationService.getApplications(); 
             setApplications(response.data);
             setError(null);
         } catch (err) {
@@ -22,11 +21,8 @@ const AdminPage = () => {
         } finally {
             setLoading(false);
         }
-    }, []); // No dependencies for fetchApplications itself
+    }, []);
 
-    // FIX: Added 'fetchApplications' to the dependency array.
-    // This ensures that if the fetchApplications function were to change,
-    // the effect would re-run, following the rules of hooks.
     useEffect(() => {
         fetchApplications();
     }, [fetchApplications]);
