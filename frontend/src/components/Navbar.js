@@ -28,7 +28,7 @@ const AppNavbar = () => {
                         ) : (
                             <>
                                 <LinkContainer to="/login"><Nav.Link>Login</Nav.Link></LinkContainer>
-                                <LinkContainer to="/register"><Nav.Link as={Button} variant="primary" className="ms-2 text-white">Sign Up</Nav.Link></LinkContainer>
+                                <LinkContainer to="/register"><Nav.Link as={Button} variant="primary" className="ms-2 text-black">Sign Up</Nav.Link></LinkContainer>
                             </>
                         )}
                         {/* Theme Toggle Switch */}

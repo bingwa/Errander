@@ -20,7 +20,7 @@ const HomePage = () => {
                             padding: '0.8rem 2rem'
                         }}
                     >
-                        Get Started
+                        Log In
                     </Button>
                 </Link>
                 <Link to="/register">
